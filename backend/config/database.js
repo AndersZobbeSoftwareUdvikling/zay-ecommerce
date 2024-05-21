@@ -1,6 +1,6 @@
 module.exports = {
-  username: process.env.DB_USERNAME || "root",
-  password: process.env.DB_PASSWORD || "root",
+  username: process.env.DB_USERNAME || "username",
+  password: process.env.DB_PASSWORD || "userpassword",
   database: process.env.DB_DATABASE || "zay",
   //host: process.env.DB_HOSTNAME || "localhost",
   host: 'db',

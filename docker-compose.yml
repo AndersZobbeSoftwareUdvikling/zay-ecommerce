@@ -1,0 +1,48 @@
+version: '3.7'
+
+services:
+  frontend:
+    image: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:3000"
+    networks:
+      - webshop-network
+
+  backend:
+    image: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - webshop-network
+    restart: unless-stopped
+    environment:
+      DB_HOSTNAME: db
+      DB_USERNAME: username
+      DB_PASSWORD: userpassword
+      DB_DATABASE: zay
+
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: zay
+      MYSQL_USER: username
+      MYSQL_PASSWORD: userpassword
+    volumes:
+      - db-data:/var/lib/mysql
+    networks:
+      - webshop-network
+
+volumes:
+  db-data:
+
+networks:
+  webshop-network:
