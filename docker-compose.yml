@@ -8,6 +8,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:3000"
+      - "8080:8080"
+    restart: unless-stopped
     networks:
       - webshop-network
 
@@ -28,6 +30,7 @@ services:
       DB_USERNAME: username
       DB_PASSWORD: userpassword
       DB_DATABASE: zay
+    command: sh -c "npm run db:reset && npm start"
 
   db:
     image: mysql:8.0
@@ -38,6 +41,7 @@ services:
       MYSQL_PASSWORD: userpassword
     volumes:
       - db-data:/var/lib/mysql
+    restart: unless-stopped
     networks:
       - webshop-network
 

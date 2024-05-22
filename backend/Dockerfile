@@ -7,17 +7,19 @@ WORKDIR /app
 # Kopier package.json og package-lock.json
 COPY package*.json ./
 
-# Installer afhængigheder
+# Installer afhï¿½ngigheder
 RUN npm install
 
 # Kopier backend-koden til containeren
 COPY . .
 
-# Exponér porten, som backend kører på
+# Exponï¿½r porten, som backend kï¿½rer pï¿½
 EXPOSE 3000
 
 # Seed database
-RUN npm run db:reset
+# RUN npm run db:reset
+# RUN npm run db:migrate
+# RUN npm run db:seed
 
 # Kommando for at starte backend-applikationen
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
