@@ -3,7 +3,7 @@ version: '3.7'
 networks:
   traefik-proxy:
     external: true
-  webshop-network:
+  # webshop-network:
 
 services:
   frontend:
@@ -21,7 +21,7 @@ services:
     
     restart: unless-stopped
     networks:
-      - webshop-network
+      - traefik-proxy
 
   backend:
     image: anderszobbesoftware/casa-backend:latest
@@ -36,7 +36,7 @@ services:
           - "traefik.http.routers.CasazayBack.tls.certresolver=letsencrypt"
           - "traefik.http.services.CasazayBack.loadbalancer.server.port=3000"
     networks:
-      - webshop-network
+      - traefik-proxy
     restart: unless-stopped
     environment:
       DB_PORT: 3306
