@@ -11,7 +11,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-    origin: "https://casa.kubelab.dk/",
+    origin: "https://casa.kubelab.dk",
     optionsSuccessStatus: 200
 }));
 app.use('/', routes());

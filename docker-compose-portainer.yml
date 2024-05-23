@@ -18,7 +18,6 @@ services:
           - "traefik.http.routers.Casazayfront.entrypoints=web,websecure"
           - "traefik.http.routers.Casazayfront.tls.certresolver=letsencrypt"
           - "traefik.http.services.Casazayfront.loadbalancer.server.port=8080"
-    
     restart: unless-stopped
     networks:
       - traefik-proxy
