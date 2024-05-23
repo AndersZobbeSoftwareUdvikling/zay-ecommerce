@@ -7,7 +7,7 @@ networks:
 
 services:
   frontend:
-    image: casa-frontend
+    image: anderszobbesoftware/casa-frontend:latest
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -24,7 +24,7 @@ services:
       - webshop-network
 
   backend:
-    image: casa-backend
+    image: anderszobbesoftware/casa-backend:latest
     build:
       context: ./backend
       dockerfile: Dockerfile
