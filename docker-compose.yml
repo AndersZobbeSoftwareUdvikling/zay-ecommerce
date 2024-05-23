@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   frontend:
-    image: frontend
+    image: casa-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -14,7 +14,7 @@ services:
       - webshop-network
 
   backend:
-    image: backend
+    image: casa-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
