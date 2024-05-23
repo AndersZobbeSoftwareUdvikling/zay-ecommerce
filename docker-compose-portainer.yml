@@ -1,0 +1,48 @@
+version: '3.7'
+
+networks:
+  traefik-proxy:
+    external: true
+  webshop-network:
+
+services:
+  frontend:
+    image: frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    deploy:
+      labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.Casazayfront.rule=Host(`kubelab.Casa.dk`)"
+          - "traefik.http.routers.Casazayfront.entrypoints=web,websecure"
+          - "traefik.http.routers.Casazayfront.tls.certresolver=letsencrypt"
+          - "traefik.http.services.Casazayfront.loadbalancer.server.port=8080"
+    
+    restart: unless-stopped
+    networks:
+      - webshop-network
+
+  backend:
+    image: backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    deploy:
+      labels:
+          - "traefik.enable=true"
+          - "traefik.http.routers.CasazayBack.rule=Host(`kubelab.CasaAdmin.dk`)"
+          - "traefik.http.routers.CasazayBack.entrypoints=web,websecure"
+          - "traefik.http.routers.CasazayBack.tls.certresolver=letsencrypt"
+          - "traefik.http.services.CasazayBack.loadbalancer.server.port=3000"
+    networks:
+      - webshop-network
+    restart: unless-stopped
+    environment:
+      DB_PORT: 3306
+      DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
+      DB_USERNAME: Casaroot
+      DB_PASSWORD: Christinaeksamensgruppe2
+      DB_DATABASE: zay
+    command: sh -c "npm start"
+

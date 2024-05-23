@@ -20,33 +20,34 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    depends_on:
-      - db
     networks:
       - webshop-network
     restart: unless-stopped
     environment:
-      DB_HOSTNAME: db
-      DB_USERNAME: username
-      DB_PASSWORD: userpassword
+      DB_PORT: 3306
+      DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
+      DB_USERNAME: Casaroot
+      DB_PASSWORD: Christinaeksamensgruppe2
       DB_DATABASE: zay
-    command: sh -c "npm run db:reset && npm start"
+    command: sh -c "npm start"
+# npm run db:reset &&
 
-  db:
-    image: mysql:8.0
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: zay
-      MYSQL_USER: username
-      MYSQL_PASSWORD: userpassword
-    volumes:
-      - db-data:/var/lib/mysql
-    restart: unless-stopped
-    networks:
-      - webshop-network
 
-volumes:
-  db-data:
+  # db:
+  #   image: mysql:8.0
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: root
+  #     MYSQL_DATABASE: zay
+  #     MYSQL_USER: username
+  #     MYSQL_PASSWORD: userpassword
+  #   volumes:
+  #     - db-data:/var/lib/mysql
+  #   restart: unless-stopped
+  #   networks:
+  #     - webshop-network
+
+# volumes:
+#   db-data:
 
 networks:
   webshop-network:
