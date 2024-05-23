@@ -42,7 +42,7 @@ services:
       DB_PORT: 3306
       DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
       DB_USERNAME: Casaroot
-      DB_PASSWORD: Christinaeksamensgruppe2
+      DB_PASSWORD: ${DB_PASSWORD}
       DB_DATABASE: zay
     command: sh -c "npm start"
 
