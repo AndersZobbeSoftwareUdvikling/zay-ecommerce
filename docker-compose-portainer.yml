@@ -14,7 +14,7 @@ services:
     deploy:
       labels:
           - "traefik.enable=true"
-          - "traefik.http.routers.Casazayfront.rule=Host(`kubelab.casa.dk`)"
+          - "traefik.http.routers.Casazayfront.rule=Host(`casa.kubelab.dk`)"
           - "traefik.http.routers.Casazayfront.entrypoints=web,websecure"
           - "traefik.http.routers.Casazayfront.tls.certresolver=letsencrypt"
           - "traefik.http.services.Casazayfront.loadbalancer.server.port=8080"
@@ -31,7 +31,7 @@ services:
     deploy:
       labels:
           - "traefik.enable=true"
-          - "traefik.http.routers.CasazayBack.rule=Host(`kubelab.casaadmin.dk`)"
+          - "traefik.http.routers.CasazayBack.rule=Host(`casaadmin.kubelab.dk`)"
           - "traefik.http.routers.CasazayBack.entrypoints=web,websecure"
           - "traefik.http.routers.CasazayBack.tls.certresolver=letsencrypt"
           - "traefik.http.services.CasazayBack.loadbalancer.server.port=3000"
