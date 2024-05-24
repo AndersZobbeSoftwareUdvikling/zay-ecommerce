@@ -41,7 +41,7 @@ services:
       - traefik-proxy
     restart: unless-stopped
     environment:
-      FRONTEND_CORS: ${FRONTEND_CORS} 
+      FRONTEND_CORS: casa.kubelab.dk
       DB_PORT: 3306
       DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
       DB_USERNAME: Casaroot
