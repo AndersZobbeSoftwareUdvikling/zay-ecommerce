@@ -7,11 +7,11 @@ The frontend is based on the following template:
 * https://github.com/mosaadaldeen/zay-shop
 
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
-<a name="readme-top"></a>
+<a id="readme-top"></a>
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
+*** or simply open an issue with thedk tag "enhancement".
 *** Don't forget to give the project a star!
 *** Thanks again! Now go create something AMAZING! :D
 -->
@@ -68,7 +68,6 @@ The frontend is based on the following template:
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -76,14 +75,8 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 ### Built With
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
+* [![Docker]]
 * [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -97,72 +90,90 @@ To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+To setup this project locally in a docker swarm you will need to have Docker installed Docker desktop can be downloaded from [https://www.docker.com/products/docker-desktop/](https://www.docker.com/products/docker-desktop/).\
+Unless you're adding the database to your swarm you will need an external database.
 
 ### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+Clone the repo
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
+#### For local docker swarm
+1. If you want to have the database stored locally uncomment the section that configures the db service as well as the volume
+3. In a text editor or IDE of choice configure the database variables in the `docker-compose.yml`.
+   ```yml
+      DB_PORT: 3306
+      DB_HOSTNAME: "Your hostname (db by default)"
+      DB_USERNAME: "Your username"
+      DB_PASSWORD: "Your password"
+      DB_DATABASE: "Your database name"
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
+1. Locate the ``main.js`` file in the src directory of the frontend project and ensure the api configuration is set to
+    ```js
+    api: `http://${window.location.hostname}:3000`
+    ```
+    In the `index.js`in the backend root directory adjust the cors setting to be
+    ```js
+    app.use(cors());
+    ```
+4. In a CLI make sure you're in the root directory of the repository. Run the following commands
+    ```pwsh
+    docker-compose build
+    docker swarm init #to initiate the docker swarm
+    docker stack deploy -c docker-compose.yml <name of your stack>
+    ```
+5. Once your containers are running make sure to seed the database. This can be done from the backend container.\
+You will need to find the id of the backend container with the command `"docker ps"` and locating the container in the list.\
+First execute into the container with the command
+    ```pwsh
+    docker exec -it <container id> bash
+    ```
+    Within the conatiner run the following command
+    ```bash
+    npm run db:reset
+    ```
+
+#### For Kubelab Portainer
+For this you will need an external MySql database.
+1. Fork the repository
+1. In a text editor or IDE of choice configure the database variables in the `docker-compose-portainer.yml`.
+   ```yml
+    DB_PORT: 3306
+    DB_HOSTNAME: "Your hostname"
+    DB_USERNAME: "Your username"
+    DB_PASSWORD: ${DB_PASSWORD}
+    DB_DATABASE: "Your database name"
    ```
+   and in the same file you should change the image names
+    ```yml
+    image: <Your docker username>/<Your frontend image name>:latest
+    ...
+    image: <Your docker username>/<Your backend image name>:latest
+    ```
+1. Follow the kubelab guide to setting up a stack on the traefik-proxy network to ensure you've configured the deploy labels correctly.
+1. Locate the ``main.js`` file in the src directory of the frontend project and ensure the api configuration is set to
+    ```js
+    api: `<Your api domain name>`
+    ```
+    In the `index.js`in the backend root directory adjust the cors setting to be
+    ```js
+    app.use(cors({
+      origin: "<Your front end domain name>",
+      optionsSuccessStatus: 200
+    }));
+    ```
+1. In a CLI make sure you're in the root directory of the repository. Run the following commands
+    ```pwsh
+    docker-compose build -c docker-compose-portainer.yml
+    docker push <Your docker username>/<Your frontend image name>
+    docker push <Your docker username>/<Your backend image name>
+    ```
+1. Go to stacks in portainer and choose "Add stack". Provide a docker-compose file by either pasting it in the web editor or by referring to your forked repository
+1. Set an environment variable in portainer to store your database password.
+1. Deploy your stack!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- USAGE EXAMPLES -->
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
@@ -178,39 +189,28 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+Anders Zobbe Mortensen - azmo63467@edu.ucl.dk
 
 
 
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
+Project Link: [https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce](https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/github_username/repo_name.svg?style=for-the-badge
-[contributors-url]: https://github.com/github_username/repo_name/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/github_username/repo_name.svg?style=for-the-badge
-[forks-url]: https://github.com/github_username/repo_name/network/members
-[stars-shield]: https://img.shields.io/github/stars/github_username/repo_name.svg?style=for-the-badge
-[stars-url]: https://github.com/github_username/repo_name/stargazers
-[issues-shield]: https://img.shields.io/github/issues/github_username/repo_name.svg?style=for-the-badge
-[issues-url]: https://github.com/github_username/repo_name/issues
-[license-shield]: https://img.shields.io/github/license/github_username/repo_name.svg?style=for-the-badge
-[license-url]: https://github.com/github_username/repo_name/blob/master/LICENSE.txt
+[contributors-shield]: https://img.shields.io/github/contributors/AndersZobbeSoftwareUdvikling/zay-ecommerce.svg?style=for-the-badge
+[contributors-url]: https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/AndersZobbeSoftwareUdvikling/zay-ecommerce.svg?style=for-the-badge
+[forks-url]: https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce/network/members
+[stars-shield]: https://img.shields.io/github/stars/AndersZobbeSoftwareUdvikling/zay-ecommerce.svg?style=for-the-badge
+[stars-url]: https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce/stargazers
+[issues-shield]: https://img.shields.io/github/issues/AndersZobbeSoftwareUdvikling/zay-ecommerce.svg?style=for-the-badge
+[issues-url]: https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce/issues
+[license-shield]: https://img.shields.io/github/license/AndersZobbeSoftwareUdvikling/zay-ecommerce.svg?style=for-the-badge
+[license-url]: https://github.com/AndersZobbeSoftwareUdvikling/zay-ecommerce/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
 [Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
 [Next-url]: https://nextjs.org/
