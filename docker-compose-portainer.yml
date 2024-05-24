@@ -22,7 +22,7 @@ services:
     networks:
       - traefik-proxy
     environment:
-      - BACKEND_API: ${BACKEND_API}
+      BACKEND_API: ${BACKEND_API}
 
   backend:
     image: anderszobbesoftware/casa-backend:latest
