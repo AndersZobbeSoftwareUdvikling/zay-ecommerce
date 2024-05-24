@@ -5,7 +5,7 @@ import App from './App.vue';
 import router from './router';
 
 const config = {
-  api: `${process.env.BACKEND_API}`,
+  api: `https://casaadmin.kubelab.dk`,
 };
 
 createApp(App)
