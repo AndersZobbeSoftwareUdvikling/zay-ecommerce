@@ -19,6 +19,3 @@ RUN npm install -g http-server
 
 # Expon�r porten frontend k�rer p�
 EXPOSE 5000
-
-# Start serveren og serv build mappen
-CMD ["http-server", "dist"]
