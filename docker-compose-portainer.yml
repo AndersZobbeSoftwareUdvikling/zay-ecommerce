@@ -21,6 +21,8 @@ services:
     restart: unless-stopped
     networks:
       - traefik-proxy
+    environment:
+      - BACKEND_API: ${BACKEND_API}
 
   backend:
     image: anderszobbesoftware/casa-backend:latest
@@ -38,6 +40,7 @@ services:
       - traefik-proxy
     restart: unless-stopped
     environment:
+      FRONTEND_CORS: ${FRONTEND_CORS} 
       DB_PORT: 3306
       DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
       DB_USERNAME: Casaroot
