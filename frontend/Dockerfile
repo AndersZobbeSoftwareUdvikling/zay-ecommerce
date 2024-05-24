@@ -12,7 +12,6 @@ RUN npm install
 
 # Byg frontend-applikationen
 COPY . .
-RUN npm run build
 
 # Install�r en server til at serve frontend, f.eks. serve
 RUN npm install -g http-server

@@ -23,7 +23,7 @@ services:
       - traefik-proxy
     environment:
       BACKEND_API: "https://casaadmin.kubelab.dk"
-    command: ["http-server", "dist"]
+    command: sh -c "npm run build && http-server dist"
 
   backend:
     image: anderszobbesoftware/casa-backend:latest
