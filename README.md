@@ -123,12 +123,8 @@ Clone the repo
     docker stack deploy -c docker-compose.yml <name of your stack>
     ```
 5. Once your containers are running make sure to seed the database. This can be done from the backend container.\
-You will need to find the id of the backend container with the command `"docker ps"` and locating the container in the list.\
-First execute into the container with the command
-    ```pwsh
-    docker exec -it <container id> bash
-    ```
-    Within the conatiner run the following command
+To get to the backend container go to the container tab and locate your backend container. Pick the quick action Exec console and connect.
+Within the conatiner run the following command
     ```bash
     npm run db:reset
     ```
