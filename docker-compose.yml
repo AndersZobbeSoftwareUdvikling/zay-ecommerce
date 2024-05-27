@@ -33,6 +33,24 @@ services:
       DB_DATABASE: zay
     command: sh -c "npm start"
 
+  seed:
+    image: casa-backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    depends_on:
+      - backend
+    networks:
+      - webshop-network
+    environment:
+      DB_PORT: 3306
+      DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
+      DB_USERNAME: Casaroot
+      DB_PASSWORD: Christinaeksamensgruppe2
+      DB_DATABASE: zay
+    command: sh -c "npm run db:reset"
+    restart: "no"
+
   # db:
   #   image: mysql:8.0
   #   environment:
