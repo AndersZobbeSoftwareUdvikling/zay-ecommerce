@@ -5,7 +5,7 @@ import App from './App.vue';
 import router from './router';
 
 const config = {
-  api: `https://casaadmin.kubelab.dk`,
+  api: `http://${window.location.hostname}:3000`,
 };
 
 createApp(App)

@@ -13,6 +13,8 @@ services:
     networks:
       - webshop-network
     command: sh -c "npm run build && http-server dist"
+    deploy:
+        replicas: 2
 
 
   backend:
@@ -27,11 +29,13 @@ services:
     restart: unless-stopped
     environment:
       DB_PORT: 3306
-      DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
-      DB_USERNAME: Casaroot
-      DB_PASSWORD: Christinaeksamensgruppe2
+      DB_HOSTNAME: db
+      DB_USERNAME: username
+      DB_PASSWORD: userpassword
       DB_DATABASE: zay
     command: sh -c "npm start"
+    deploy:
+        replicas: 2
 
   seed:
     image: casa-backend
@@ -44,28 +48,28 @@ services:
       - webshop-network
     environment:
       DB_PORT: 3306
-      DB_HOSTNAME: zay-ecormmerce-db.mysql.database.azure.com
-      DB_USERNAME: Casaroot
-      DB_PASSWORD: Christinaeksamensgruppe2
+      DB_HOSTNAME: db
+      DB_USERNAME: username
+      DB_PASSWORD: userpassword
       DB_DATABASE: zay
     command: sh -c "npm run db:reset"
     restart: "no"
 
-  # db:
-  #   image: mysql:8.0
-  #   environment:
-  #     MYSQL_ROOT_PASSWORD: root
-  #     MYSQL_DATABASE: zay
-  #     MYSQL_USER: username
-  #     MYSQL_PASSWORD: userpassword
-  #   volumes:
-  #     - db-data:/var/lib/mysql
-  #   restart: unless-stopped
-  #   networks:
-  #     - webshop-network
+  db:
+     image: mysql:8.0
+     environment:
+       MYSQL_ROOT_PASSWORD: root
+       MYSQL_DATABASE: zay
+       MYSQL_USER: username
+       MYSQL_PASSWORD: userpassword
+     volumes:
+       - db-data:/var/lib/mysql
+     restart: unless-stopped
+     networks:
+       - webshop-network
 
-# volumes:
-#   db-data:
+volumes:
+  db-data:
 
 networks:
   webshop-network:
